@@ -1,8 +1,8 @@
 //Horse Betting Simulator
 //Cole Burgi - [date]
 
-#include "FileEditor.h"
 #include "Crypto.h"
+#include "Horses.h"
 #include <conio.h>
 
 #define MAX 40
@@ -14,15 +14,24 @@ int main(){
     double balance;
     char* username = (char*)malloc(MAX);
     user* users = NULL;
+
+    //WHEN PROGRAM IS OPENED
     readFile(&users, "users.crp");
     //readFile(&users, "usersDev.txt");
     system("cls");
 
+    //printed for user
     puts(" ~*~*~*~*~*~*~ Welcome to the races! ~*~*~*~*~*~*~ ");
     puts("Press 'e' at any time to return to a previous menu.");
     balance = login(users, username);
     printf("%.2f", balance);
 
+    //Creating horses
+    horse horses[H_NUM];
+    makeHorses(horses);
+    //printHorses(horses);
+
+    //WHEN PROGRAM IS CLOSED
     writeFile(&users, "users.crp");
     //writeFile(users, "usersDev.txt");
     system("cls");
