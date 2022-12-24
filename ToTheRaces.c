@@ -18,6 +18,8 @@ int main(){
     //readFile(&users, "usersDev.txt");
     system("cls");
 
+    puts(" ~*~*~*~*~*~*~ Welcome to the races! ~*~*~*~*~*~*~ ");
+    puts("Press 'e' at any time to return to a previous menu.");
     balance = login(users, username);
     printf("%.2f", balance);
 
@@ -31,10 +33,7 @@ double login(user* list, char* username){
     char* password = (char*)malloc(MAX);
     user* ptr = list;
 
-    system("cls");
     while(1){
-        puts("Welcome to the races!");
-        puts("Press 'e' at any time to return to a previous menu.");
         puts("Enter username (or type new to make a new account)");
         scanf("%s", username);
         if(!strcmp("new", username)){
