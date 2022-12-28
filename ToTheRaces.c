@@ -189,15 +189,25 @@ void logout(user** list, char** username, double balance){
 
 double addFunds(double oldBalance){
     double change, newBalance;
+    char exit;
+    system("cls");
 
+    printf("Current balance is %.2f\n", oldBalance);
     puts("How much would you like to add?");
     while(1){
         if(scanf(" %lf", &change))break;
+        if(scanf(" %c", &exit)){
+            if (exit == 'e') {
+                system("cls");
+                return oldBalance;
+            }
+        }
         printf("Sorry, that is not a valid amount, pleast try again\n");
         while ((getchar()) != '\n');
     }
 
     newBalance = oldBalance + change;
+    system("cls");
     printf("Your new balance is %.2f", newBalance);
 
     return newBalance;
