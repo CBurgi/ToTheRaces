@@ -17,12 +17,22 @@ void makeHorses(horse horses[H_NUM]){
     horses[0].winChance = 0;
     srand ( time(NULL) );
 
-    for(int i=1; i<=H_NUM; i++){
-        horses[i].amountBet = 0;
-        horses[i].distance = 0;
+    //using a for loop here didnt work for some reason
+    horses[1].amountBet = 0;
+    horses[2].amountBet = 0;
+    horses[3].amountBet = 0;
+    horses[4].amountBet = 0;
 
-        horses[i].name = nameHorse(horses, i);
-    }
+    horses[1].distance = 0;
+    horses[2].distance = 0;
+    horses[3].distance = 0;
+    horses[4].distance = 0;
+
+    horses[1].name = nameHorse(horses, 1);
+    horses[2].name = nameHorse(horses, 2);
+    horses[3].name = nameHorse(horses, 3);
+    horses[4].name = nameHorse(horses, 4);
+
     horses[1].winChance = (rand() % (H1_CHANCE - 1 + 1)) + 1;
     horses[2].winChance = (rand() % (H2_CHANCE - H1_CHANCE + 1)) + H1_CHANCE;
     horses[3].winChance = (rand() % (H1_CHANCE - H2_CHANCE + 1)) + H2_CHANCE;
@@ -42,6 +52,6 @@ char nameHorse(horse horses[H_NUM], int currentH) {
 //prints each horse and its percent chance of winning
 void printHorses(horse horses[H_NUM]){
     for(int i = 0; i<H_NUM; i++){
-        printf("%c: %i\n", horses[i].name, horses[i].winChance - horses[i-1].winChance);
+        printf("%c: %i\n", horses[i].name, horses[i].winChance/* - horses[i-1].winChance*/);
     }
 }
