@@ -11,11 +11,13 @@ double login(user** list, char** user);
 int makeUser(user** list, char** user, char* pass);
 void logout(user** list, char** username, double balance);
 double addFunds(double oldBalance);
+double bet(double balance, horse horses[5]);
 
 int main(){
     double balance;
     char* username = (char*)malloc(MAX);
     user* users = NULL;
+    char exit = '0';
 
     //WHEN PROGRAM IS OPENED
     readFile(&users, "users.crp");
@@ -25,7 +27,7 @@ int main(){
     //Creating horses
     horse horses[H_NUM];
     makeHorses(horses);
-    printHorses(horses);
+    //printHorses(horses);
 
     //printed for user
     puts(" ~*~*~*~*~*~*~ Welcome to the races! ~*~*~*~*~*~*~ ");
@@ -54,14 +56,33 @@ int main(){
             }
             else
             {
+                if(scanf(" %c", &exit)){
+                    if (exit == 'e') {
+                        system("cls");
+                        break;
+                    }
+                }
                 printf("Sorry that is not a valid selection, please try again.\n\n");
                 while ((getchar()) != '\n');
             }
         }
 
         // testing for quit before anything else so we can stop right away
-        if (selection == 4)
-            break;
+        if (selection == 4 || exit == 'e'){
+            while(1){
+                while ((getchar()) != '\n');
+                puts("Are you sure you want to exit? Y/N");
+                if(scanf(" %c", &exit)){
+                    if (exit == 'e' || exit == 'Y'  || exit == 'y') {
+                        system("cls");
+                        logout(&users, &username, balance);
+                        return 0;
+                    }
+                    if(exit == 'N' || exit == 'n')break;
+                }
+                printf("Sorry, that is not a valid response, pleast try again\n");
+            }
+        }
 
         //chooses which selection to run. If the input is not a valid selection, default will run and restart the 
         //  selection process
@@ -71,7 +92,7 @@ int main(){
             balance = addFunds(balance);
             break;
         case (2): // Bet on horses
-            
+            balance = bet(balance, horses);
             break;
         case (3): // Watch Race
             
@@ -81,8 +102,6 @@ int main(){
         }
     }
 
-    //WHEN PROGRAM IS CLOSED
-    logout(&users, &username, balance);
     return 0;
 }
 
@@ -195,6 +214,7 @@ double addFunds(double oldBalance){
     printf("Current balance is %.2f\n", oldBalance);
     puts("How much would you like to add?");
     while(1){
+        while ((getchar()) != '\n');
         if(scanf(" %lf", &change))break;
         if(scanf(" %c", &exit)){
             if (exit == 'e') {
@@ -203,7 +223,6 @@ double addFunds(double oldBalance){
             }
         }
         printf("Sorry, that is not a valid amount, pleast try again\n");
-        while ((getchar()) != '\n');
     }
 
     newBalance = oldBalance + change;
@@ -211,4 +230,69 @@ double addFunds(double oldBalance){
     printf("Your new balance is %.2f", newBalance);
 
     return newBalance;
+}
+
+double bet(double balance, horse horses[5]){
+    while(1){
+    char bet = '0', exit = '0';
+    double amountBet = 0;
+    int h = 0;
+    system("cls");
+    printf("Current balance: $%.2f\n", balance);
+    puts("Horses running in the next race:");
+    printHorses(horses);
+    puts("Which horse would you like to bet on?");
+    while(1){
+        while ((getchar()) != '\n');
+        if(scanf(" %c", &bet)){
+            if (bet == 'e') {
+                system("cls");
+                return balance;
+            }
+            for(int i=0; i<H_NUM;i++){
+                if(bet == horses[i].name){
+                    h = i;
+                    break;
+                }
+            }
+        }
+        if(h != 0)break;
+        printf("Sorry, that is not a valid horse, please try again\n");
+    }
+    puts("How much would you like to bet?");
+    while(1){
+        while ((getchar()) != '\n');
+        if(scanf(" %lf", &amountBet)){
+            if(amountBet <=balance){
+                balance -= amountBet;
+                horses[h].amountBet += amountBet;
+                system("cls");
+                printf("$%.2f bet on horse %c.", amountBet, bet);
+                break;
+            }
+            puts("Insufficient funds in account, please try again.");
+            continue;
+        }
+        if(scanf(" %c", &exit)){
+            if (exit == 'e') {
+                system("cls");
+                break;
+            }
+        }
+        puts("Sorry, that is not a valid amount, please try again.");
+    }
+    //(exit) variable is reversed from assumed here because of wording of command.
+    while(1){
+        puts("Do you want to bet on another horse? Y/N");
+        while ((getchar()) != '\n');
+        if(scanf(" %c", &exit)){
+            if (exit == 'e' || exit == 'N' || exit == 'n') {
+                system("cls");
+                return balance;
+            }
+            if(exit == 'Y' || exit == 'y')break;
+        }
+        printf("Sorry, that is not a valid response, please try again\n");
+    }
+    }
 }
