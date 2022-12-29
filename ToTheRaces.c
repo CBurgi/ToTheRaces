@@ -4,14 +4,17 @@
 #include "Crypto.h"
 #include "Horses.h"
 #include <conio.h>
+#include <math.h>
 
 #define MAX 40
+#define TRACK_LENGTH 80
 
 double login(user** list, char** user);
 int makeUser(user** list, char** user, char* pass);
 void logout(user** list, char** username, double balance);
 double addFunds(double oldBalance);
 double bet(double balance, horse horses[5]);
+double watch(horse horses[5]);
 
 int main(){
     double balance;
@@ -34,11 +37,11 @@ int main(){
     puts("Press 'e' at any time to return to a previous menu.");
     balance = login(&users, &username);
     system("cls");
-    printf("Welcome %s! Current balance: %.2f", decrypt(username), balance);
 
     int selection = 0;
     while (1)
     {
+        printf("Welcome %s! Current balance: %.2f", decrypt(username), balance);
 
         //will run again if the input is not a valid int
         while (1)
@@ -80,7 +83,7 @@ int main(){
                     }
                     if(exit == 'N' || exit == 'n')break;
                 }
-                printf("Sorry, that is not a valid response, pleast try again\n");
+                printf("Sorry, that is not a valid response, please try again\n");
             }
         }
 
@@ -95,7 +98,8 @@ int main(){
             balance = bet(balance, horses);
             break;
         case (3): // Watch Race
-            
+            balance += watch(horses);
+            makeHorses(horses);
             break;
         default:
             printf("Sorry that is not a valid selection, please try again.\n\n");
@@ -135,8 +139,8 @@ double login(user** list, char** username){
             }
 
             ptr = ptr->next;
+            system("cls");
         }
-        system("cls");
         if(!uFound)puts("Sorry, username could not be found");
     }
 
@@ -222,13 +226,11 @@ double addFunds(double oldBalance){
                 return oldBalance;
             }
         }
-        printf("Sorry, that is not a valid amount, pleast try again\n");
+        printf("Sorry, that is not a valid amount, please try again\n");
     }
 
     newBalance = oldBalance + change;
     system("cls");
-    printf("Your new balance is %.2f", newBalance);
-
     return newBalance;
 }
 
@@ -249,8 +251,8 @@ double bet(double balance, horse horses[5]){
                 system("cls");
                 return balance;
             }
-            for(int i=0; i<H_NUM;i++){
-                if(bet == horses[i].name){
+            for(int i=1; i<H_NUM;i++){
+                if(bet == horses[i].name || bet-48 == i){
                     h = i;
                     break;
                 }
@@ -267,7 +269,7 @@ double bet(double balance, horse horses[5]){
                 balance -= amountBet;
                 horses[h].amountBet += amountBet;
                 system("cls");
-                printf("$%.2f bet on horse %c.", amountBet, bet);
+                printf("$%.2f bet on horse %c.\n", amountBet, bet);
                 break;
             }
             puts("Insufficient funds in account, please try again.");
@@ -295,4 +297,57 @@ double bet(double balance, horse horses[5]){
         printf("Sorry, that is not a valid response, please try again\n");
     }
     }
+}
+
+double watch(horse horses[5]){
+    char winner = '0';
+    char exit; 
+    int i, j, move = 0;
+    double payout = 0.00;
+
+    while(winner == '0'){
+        system("cls");
+        for (i = 1; i<H_NUM-1;i++) printf("$%.2f on %c(%i%%), ", horses[i].amountBet, horses[i].name, horses[i].winChance - horses[i-1].winChance);
+        printf("$%.2f on %c(%i%%)\n", horses[H_NUM-1].amountBet, horses[H_NUM-1].name, horses[H_NUM-1].winChance - horses[H_NUM-2].winChance);
+
+        for(i = 0;i<TRACK_LENGTH+4;i++)printf("=");
+        puts("");
+        for(i=1;i<H_NUM;i++){
+            printf("|");
+            if(horses[i].distance < TRACK_LENGTH){
+                for(j=0;j<horses[i].distance;j++)printf(" ");
+                printf("%c", horses[i].name);
+                for(j=0;j<TRACK_LENGTH - horses[i].distance-1;j++)printf(" ");
+                printf("| |\n");
+            }else {
+                for(j=0;j<TRACK_LENGTH;j++)printf(" ");
+                printf("|%c|\n", horses[i].name);
+                winner = horses[i].name;
+            }
+        }
+
+        for(i = 0;i<TRACK_LENGTH+4;i++)printf("=");
+        puts("");
+        for(i=1;i<H_NUM;i++){
+            if(winner == horses[i].name){
+                printf("Horse %c wins! ", winner);
+                if(horses[i].amountBet > 0){
+                    payout = round((horses[i].amountBet/(horses[i].winChance-horses[i-1].winChance)) * 10000) / 100;
+                    printf("You won $%.2f!\n", payout);
+                }else printf("Better luck next time.\n");
+                break;
+            }
+        }
+
+        move = (rand() % (100 - 1 + 1)) + 1;
+        for(i=1;i<H_NUM;i++){
+            if(move <= horses[i].winChance && move > horses[i-1].winChance)horses[i].distance +=1;
+        }
+    }
+
+    while ((getchar()) != '\n');
+    puts("Type any key to return to menu:");
+    scanf("%c", &exit);
+    system("cls");
+    return payout;
 }
