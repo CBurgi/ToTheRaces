@@ -302,7 +302,7 @@ double bet(double balance, horse horses[5]){
 double watch(horse horses[5]){
     char winner = '0';
     char exit; 
-    int i, j, move = 0;
+    int i, j, move = 0, rnd = 0;
     double payout = 0.00;
 
     while(winner == '0'){
@@ -334,15 +334,21 @@ double watch(horse horses[5]){
                 if(horses[i].amountBet > 0){
                     payout = round((horses[i].amountBet/(horses[i].winChance-horses[i-1].winChance)) * 10000) / 100;
                     printf("You won $%.2f!\n", payout);
-                }else printf("Better luck next time.\n");
+                }else printf("\n");
                 break;
             }
         }
-
+        if(rnd%4 == 0){
         move = (rand() % (100 - 1 + 1)) + 1;
         for(i=1;i<H_NUM;i++){
-            if(move <= horses[i].winChance && move > horses[i-1].winChance)horses[i].distance +=1;
+            if(move <= horses[i].winChance && move > horses[i-1].winChance)horses[i].distance++;
         }
+        }else{
+        move = (rand() % (4 - 1 + 1)) + 1;
+        horses[move].distance++;
+        }
+
+        rnd++;
     }
 
     while ((getchar()) != '\n');

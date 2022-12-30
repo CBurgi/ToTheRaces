@@ -2,9 +2,9 @@
 
 //number of horses + 1
 #define H_NUM 5
-#define H1_CHANCE 65
-#define H2_CHANCE 80
-#define H3_CHANCE 95
+#define H1_CHANCE 50
+#define H2_CHANCE 70
+#define H3_CHANCE 85
 
 void makeHorses(horse horses[H_NUM]);
 char nameHorse(horse horses[H_NUM], int currentH);
