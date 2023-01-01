@@ -9,7 +9,7 @@ user* newUser(char* name, char* pass, double balance);
 void addUser(user **userList, user *temp);
 void writeFile(user **writeList, char filename[]);
 
-//reads through a file and makes a list based on its contents
+//reads through a file and makes a list of users based on its contents
 void readFile(user **readList, char filename[])
 {
     char tempName[MAX];
@@ -66,7 +66,7 @@ user* newUser(char* name, char* pass, double balance){
     return temp;
 }
 
-//adds a user passed from readFile to the end of a list
+//adds a user passed from readFile to the end of a list of users
 void addUser(user **userList, user *temp)
 {
     user *ptr = NULL;
@@ -94,7 +94,7 @@ void addUser(user **userList, user *temp)
     }
 }
 
-//writes all the nodes of a list to a file
+//writes all the nodes of a list of users to a file
 void writeFile(user **writeList, char filename[])
 {
     file = fopen(filename, "w");

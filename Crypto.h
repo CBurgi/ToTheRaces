@@ -3,8 +3,10 @@
 #include <stdlib.h>
 
 #define MAX 40
+//cryptoMagic is another one of my programs
+//https://github.com/CBurgi/cryptoMagic
 
-//encripts a string
+//encripts a string following cryptoMagic's logic
 char* encrypt(char* decrp){
     char *crp = (char*)malloc(strlen(decrp)*2+1);
     
@@ -28,7 +30,7 @@ char* encrypt(char* decrp){
     return crp;
 }
 
-//decrypts a string
+//decrypts a string following cryptoMagic's logic
 char* decrypt(char* crp){
     char *decrp = (char*)malloc(strlen(crp)/2);
     char temp[3];

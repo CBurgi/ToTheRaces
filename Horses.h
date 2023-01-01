@@ -10,6 +10,9 @@ void makeHorses(horse horses[H_NUM]);
 char nameHorse(horse horses[H_NUM], int currentH);
 void printHorses(horse horses[H_NUM]);
 
+//Makes the 4 horses that will be used for the race
+//and one extra horse at the beginning of the array
+//for calculation purposes
 void makeHorses(horse horses[H_NUM]){
     horses[0].amountBet = 0;
     horses[0].distance = 0;
@@ -29,7 +32,7 @@ void makeHorses(horse horses[H_NUM]){
     horses[4].winChance = 100;
 }
 
-//generates an engish capital letter that has not been used and assignes it to the current horse
+//generates an english capital letter that has not been used and assigns it to the current horse
 char nameHorse(horse horses[H_NUM], int currentH) {
     char tempName = (rand() % (90 - 65 + 1)) + 65;
     for(int j = 0; j<currentH; j++){

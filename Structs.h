@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+//user struct
 typedef struct user
 {
     char* username;
@@ -12,6 +13,7 @@ typedef struct user
     struct user *next;
 } user;
 
+//horse struct
 typedef struct horse
 {
     char name;

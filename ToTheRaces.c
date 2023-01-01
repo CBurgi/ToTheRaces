@@ -109,6 +109,8 @@ int main(){
     return 0;
 }
 
+//Scans through the user list and returns a balance matching 
+//  a username and password, can also call makeUser
 double login(user** list, char** username){
     char* password = (char*)malloc(MAX);
     user* ptr = *list;
@@ -147,6 +149,8 @@ double login(user** list, char** username){
     return 0;
 }
 
+//makes a new user (username and password) and adds it to 
+//  the user list with a balance of 0
 int makeUser(user** list, char** username, char* pass){
     system("cls");
     user* ptr = *list;
@@ -194,6 +198,8 @@ int makeUser(user** list, char** username, char* pass){
     return 1;
 }
 
+//Changes the logged in user's saved balance to the new balance
+//  after any bets and writes the user list to the 'users' file
 void logout(user** list, char** username, double balance){
     user* ptr = *list;
     while(ptr != NULL){
@@ -299,6 +305,8 @@ double bet(double balance, horse horses[5]){
     }
 }
 
+//Loops until a horse wins then returns any winnings
+//draws the horse race to the terminal using ASCII
 double watch(horse horses[5]){
     char winner = '0';
     char exit; 
