@@ -5,7 +5,7 @@ store your balance or make a new one, then add to
 your account balance, bet on randomly generated horses,
 and watch those horses run their race! After each race
 new horses will be generated for you to watch run.
-Your new account balance will be stores when you log out.
+Your new account balance will be stored when you log out.
 
 Simply follow the prompts given, or type 'e' at any
 time to return to a previous menu.
